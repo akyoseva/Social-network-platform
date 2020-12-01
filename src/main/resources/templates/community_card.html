@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Community information</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" id="bootstrap-css" rel="stylesheet">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="js/lib/jquery-1.11.1.min.js" type="text/javascript"></script>
+</head>
+<th:block th:include="~{includes/header}"></th:block>
+<body>
+<div class="container">
+    <div class="card border-0 shadow my-11">
+        <h3 style="text-align:center">Community information</h3>
+        <div class="row">
+            <div class="col-md-12 card-body p-5 amber-text">
+                <div class="form-group" th:text="${currentCommunity.getTitle()}"></div>
+                <div class="form-group" th:text="${currentCommunity.getDescription()}"></div>
+                <form class="form-group" sec:authorize="hasRole('ROLE_ADMIN')" th:action="@{/communities/community-card/{id}/create-forum (id=${currentCommunity.getId()})}">
+                    <button class="btn btn-primary" type="submit">Create forum</button>
+                </form>
+                <div class="form-group">
+                    <label>Forums</label>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col">#ID</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Info</th>
+                            <th scope="col" sec:authorize="hasRole('ROLE_ADMIN')">Delete</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="forum: ${currentCommunity.getForums()}">
+                            <td th:text="${forum.getId()}"></td>
+                            <td th:text="${forum.getTitle()}"></td>
+                            <td th:text="${forum.getDescription()}"></td>
+                            <td>
+                                <form th:action="@{/forum-card/{id}(id=${forum.getId()})}">
+                                    <button class="btn btn-primary" type="submit">Info</button>
+                                </form>
+                            </td>
+                            <td>
+                                <form th:action="@{/forum-card/{id}/delete(id=${forum.getId()})}" method="post">
+                                    <button sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-primary" type="submit">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="form-group">
+                    <label>Members</label>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col">#ID</th>
+                            <th scope="col">Username</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="member: ${currentCommunity.getMembers()}">
+                            <td th:text="${member.getId()}"></td>
+                            <td th:text="${member.getUsername()}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

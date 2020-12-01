@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Create post</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" id="bootstrap-css" rel="stylesheet">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="js/lib/jquery-1.11.1.min.js" type="text/javascript"></script>
+</head>
+<header> <th:block th:include="~{includes/header}"></th:block> </header>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-8 ">
+
+            <form th:object="${comment}" th:method="POST" th:action="@{/forum-card/post/{id}/create-comment (id=${post.getId()})}">
+                <div class="form-group">
+                    <label for="text">Text</label>
+                    <textarea rows="6" cols="99" name="text" id="text" th:field="*{text}"></textarea>
+                </div>
+                <button type="submit" name="save" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

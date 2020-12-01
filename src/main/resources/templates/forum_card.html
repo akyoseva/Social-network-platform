@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Community information</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" id="bootstrap-css" rel="stylesheet">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="js/lib/jquery-1.11.1.min.js" type="text/javascript"></script>
+</head>
+<th:block th:include="~{includes/header}"></th:block>
+<body>
+<div class="container">
+    <div class="card border-0 shadow my-11">
+        <h3 style="text-align:center">Forum information</h3>
+        <div class="row">
+            <div class="col-md-12 card-body p-5 amber-text">
+                <label class="form-group" th:text="${currentForum.getTitle()}"></label>
+                <label class="form-group" th:text="${currentForum.getDescription()}"></label>
+                <div class="form-group">
+                    <div th:if="${currentForum.getCommunity().getMembers().contains(user)}">
+                        <form th:action="@{/forum-card/{id}/create-post (id=${currentForum.getId()})}">
+                            <button class="btn btn-primary" type="submit">Create post</button>
+                        </form>
+                    </div>
+                    <br/>
+                    <div th:each = "post: ${currentForum.getPosts()}">
+                        <div class="row">
+                            <div class="col-8">
+                                <div>
+                                    <div class="card mb-4">
+                                        <div class="card-body">
+                                            <h2 class="card-title" th:text="${post.getTitle()}"></h2>
+                                            <p class="card-text" th:text="${post.getText()}"></p>
+                                            <a th:href="@{/post/{id}/show-comments (id=${post.getId()})}" class="btn btn-primary" link="#">Show comments</a>
+                                            <a th:href="@{/forum-card/post/{id}/create-comment (id=${post.getId()})}" class="btn btn-primary">Create comment</a>
+                                        </div>
+                                        <div class="card-footer text-muted">
+                                            Posted by <text th:text="${post.getUser().getUsername()}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" id="bootstrap-css" rel="stylesheet">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <title>Users</title>
+</head>
+<header> <th:block th:include="~{includes/header}"></th:block> </header>
+<body>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">#ID</th>
+        <th scope="col">Username</th>
+        <th scope="col">Email</th>
+        <th scope="col" sec:authorize="hasRole('ROLE_USER')">Follow</th>
+        <th scope="col" sec:authorize="hasRole('ROLE_ADMIN')">Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each = "user: ${users}">
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.username}"></td>
+        <td th:text="${user.email}"></td>
+        <td sec:authorize="hasRole('ROLE_USER')">
+            <div th:if="${currentUser.getFollowing().contains(user)}">
+                <form th:action="@{/users/unfollow/{id}(id=${user.getId()})}" th:method="post">
+                    <button class="btn btn-primary" type="submit">Unfollow</button>
+                </form>
+            </div>
+            <div th:unless="${currentUser.getFollowing().contains(user)}">
+                <form th:action="@{/users/follow/{id}(id=${user.getId()})}" th:method="post">
+                    <button class="btn btn-primary" type="submit">Follow</button>
+                </form>
+            </div>
+        </td>
+        <td sec:authorize="hasRole('ROLE_ADMIN')">
+            <form th:action="@{/users/delete/{id}(id=${user.getId()})}" th:method="post">
+                <button class="btn btn-primary" type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

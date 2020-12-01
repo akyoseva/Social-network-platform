@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml" xmlns: xmlns:sec="http://www.w3.org/1999/xhtml"
+      sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" id="bootstrap-css" rel="stylesheet">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <title>Communities</title>
+</head>
+<header> <th:block th:include="~{includes/header}"></th:block> </header>
+<body>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">#ID</th>
+        <th scope="col">Title</th>
+        <th scope="col">Description</th>
+        <th scope="col">Information</th>
+        <th scope="col" sec:authorize="hasRole('ROLE_USER')">Join</th>
+        <th scope="col" sec:authorize="hasRole('ROLE_ADMIN')">Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each = "community: ${communities}">
+        <td th:text="${community.id}"></td>
+        <td th:text="${community.getTitle()}"></td>
+        <td th:text="${community.description}"></td>
+        <td>
+            <div>
+                <form th:action="@{/communities/community-card/{id}(id=${community.getId()})}">
+                    <button class="btn btn-primary" type="submit">Info</button>
+                </form>
+            </div>
+        </td>
+        <td sec:authorize="hasRole('ROLE_USER')">
+            <div th:if="${community.getMembers().contains(user)}">
+                <form th:action="@{/communities/leave/{id}(id=${community.getId()})}" th:method="post">
+                    <button sec:authorize="hasRole('ROLE_USER')" class="btn btn-primary" type="submit">Leave</button>
+                </form>
+            </div>
+            <div th:unless="${community.getMembers().contains(user)}">
+                <form th:action="@{/communities/join/{id}(id=${community.getId()})}" th:method="post">
+                    <button sec:authorize="hasRole('ROLE_USER')" class="btn btn-primary" type="submit">Join</button>
+                </form>
+            </div>
+        </td>
+        <td>
+            <form th:action="@{/communities/delete/{id}(id=${community.getId()})}" th:method="post">
+                <button sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-primary" type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

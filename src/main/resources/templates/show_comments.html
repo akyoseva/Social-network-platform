@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" id="bootstrap-css" rel="stylesheet">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <title>Show comments</title>
+</head>
+<header>
+    <th:block th:include="~{includes/header}"></th:block>
+</header>
+<body>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">#ID</th>
+        <th scope="col">Author</th>
+        <th scope="col">Comment</th>
+        <th scope="col">Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="comment: ${comments}">
+        <td th:text="${comment.getId()}"></td>
+        <td th:text="${comment.getUser().getUsername()}"></td>
+        <td th:text="${comment.getText()}"></td>
+        <td>
+            <form th:action="@{/forum-card/post/delete-comment/{id} (id=${comment.getId()})}" th:method="post">
+                <div th:if="${comment.getUser().equals(currentUser)}">
+                    <button class="btn btn-primary" type="submit">Delete</button>
+                </div>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

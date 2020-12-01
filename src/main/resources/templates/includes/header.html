@@ -1,0 +1,41 @@
+<th:block>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">JavaKnights social platform</a>
+        <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
+                data-target="#navbarSupportedContent" data-toggle="collapse" type="button">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+               <li>
+                   <form class="form-inline my-2 my-lg-0" th:action="@{/search}" th:object="${search}" th:method="post">
+                       <input sec:authorize="isAuthenticated()" class="form-control mr-sm-2" type="search" placeholder="Search" name="text" id="text" aria-label="Search">
+                       <button sec:authorize="isAuthenticated()" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                   </form>
+               </li>
+                <li class="nav-item">
+                    <a class="nav-link" sec:authorize="!isAuthenticated()" th:href="@{/register}">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" sec:authorize="!isAuthenticated()" th:href="@{/login}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/profile}">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/communities}">Communities</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/users}">Users</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/create-community}">Create community</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/logout}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</th:block>
